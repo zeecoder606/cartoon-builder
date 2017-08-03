@@ -22,7 +22,7 @@ from gi.repository import Gdk
 from gi.repository import GObject
 import gettext
 
-from sugar import profile
+from sugar3 import profile
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.radiotoolbutton import RadioToolButton
 from sugar3.graphics.toolbox import Toolbox
@@ -44,7 +44,7 @@ def _create_activity_icon(metadata):
     else:
         color = profile.get_color()
 
-    from sugar.activity.activity import get_bundle_path
+    from sugar3.activity.activity import get_bundle_path
     bundle = ActivityBundle(get_bundle_path())
     icon = Icon(file=bundle.get_icon(), xo_color=color)
 

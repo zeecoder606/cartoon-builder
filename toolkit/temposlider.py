@@ -20,12 +20,14 @@ from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 from gi.repository import Rsvg
 import cairo
+import logging
+logger = logging.getLogger('cartoon build')
 
 from sugar3.graphics import style
 
 class TempoSlider(Gtk.HBox):
     def __init__(self, min_value, max_value):
-        Gtk.Hbox.__init__(self)
+        Gtk.HBox.__init__(self)
 
         self._pixbuf = [None] * 8
         self._image = Gtk.Image()
@@ -67,11 +69,16 @@ class TempoSlider(Gtk.HBox):
         def map_range(value, ilower, iupper, olower, oupper):
             if value == iupper:
                 return oupper
+            logger.debug('hereit')
+            logger.debug(ilower)  
+            logger.debug(iupper)
+            logger.debug(olower)
+            logger.debug(oupper)  
             return olower + int((oupper-olower+1) * (value-ilower) /
                     float(iupper-ilower))
 
-        img = map_range(tempo, self.adjustment.lower,
-                            self.adjustment.upper, 0, 7)
+        img = map_range(tempo, self.adjustment.get_lower(),
+                            self.adjustment.get_upper(), 0, 7)
 
         if not self._pixbuf[img]:
             svg = Rsvg.Handle()
@@ -98,9 +105,9 @@ def _from_svg_at_size(filename=None, width=None, height=None, handle=None,
     if not handle:
         handle = Rsvg.Handle()
         handle.new_from_file(filename)
-    dimensions = handle.get_dimension_data()
-    icon_width = dimensions[0]
-    icon_height = dimensions[1]
+    dimensions = handle.get_dimensions()
+    icon_width = dimensions.width
+    icon_height = dimensions.height
 
     if (icon_width != width or icon_height != height) and \
         icon_width != 0 and icon_height != 0:

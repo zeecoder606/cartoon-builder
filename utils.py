@@ -38,8 +38,7 @@ class ComboBox(_ComboBox):
             self._icon_renderer = Gtk.CellRendererPixbuf()
 
             settings = self.get_settings()
-            w, h = Gtk.icon_size_lookup_for_settings(settings,
-                    Gtk.IconSize.MENU)
+            zxx, w, h = Gtk.icon_size_lookup_for_settings(settings, Gtk.IconSize.MENU)
             self._icon_renderer.props.stock_size = w
 
             self._icon_renderer.props.xpad = 4

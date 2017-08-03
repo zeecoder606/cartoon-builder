@@ -25,6 +25,7 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 import logging
+logger = logging.getLogger('cartoonbuilder')
 
 #from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
@@ -144,6 +145,8 @@ class View(Gtk.EventBox):
         self._screen.draw()
 
     def set_tempo(self, tempo):
+        logger.debug('carto')
+        logger.debug(tempo)
         self._delay = 10 + (10 - int(tempo)) * 100
         if self._playing:
             GObject.source_remove(self._playing)
@@ -400,9 +403,9 @@ class View(Gtk.EventBox):
         for i in range(len(self._frames)):
             if i < len(self._char.frames):
                 self._frames[i].set_from_pixbuf(self._char.frames[i].thumb())
-                self._frames[i].parent.show()
+                self._frames[i].get_parent().show()
             else:
-                self._frames[i].parent.hide()
+                self._frames[i].get_parent().hide()
 
     def _combo_cb(self, widget, cb):
         choice = widget.props.value.select()

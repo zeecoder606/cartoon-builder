@@ -155,7 +155,7 @@ class CartoonBuilderActivity(SharedActivity):
             self.montage.props.frame = (i, None)
 
     def __tempo_cb(self, widget):
-        self.montage.set_tempo(widget.get_value)
+        self.montage.set_tempo(widget.get_value())
 
     def __play_cb(self, widget, playButtonImg, pauseButtonImg):
         if widget.get_active():
