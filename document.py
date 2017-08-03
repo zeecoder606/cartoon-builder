@@ -17,9 +17,9 @@ gi.require_version('Gtk', '3.0')
 import os
 from gi.repository import Gtk
 import logging
-
-import toolkit.json as json
-
+try: import simplejson as json
+except ImportError: 
+     import json
 import theme
 from sound import *
 from ground import *
