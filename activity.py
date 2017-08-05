@@ -22,7 +22,6 @@ logger = logging.getLogger('cartoon-builder')
 
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
-#from sugar3.activity.activity import ActivityToolbox
 
 from toolkit.temposlider import TempoSlider
 from toolkit.activity import SharedActivity
@@ -30,7 +29,6 @@ from toolkit.toolbarbox import ToolbarBox
 from toolkit.activity_widgets import *
 
 import montage
-import lessons
 import document
 import char
 import ground
@@ -51,10 +49,7 @@ class CartoonBuilderActivity(SharedActivity):
 
         self.montage = montage.View()
         self.notebook.append_page(self.montage, Gtk.Label(''))
-        self.lessons = lessons.View()
-        self.lessons.show()
-        self.notebook.append_page(self.lessons, Gtk.Label(''))
-
+     
         toolbox = ToolbarBox()
         toolbox.show()
 
@@ -64,20 +59,10 @@ class CartoonBuilderActivity(SharedActivity):
         separator.set_draw(False)
         toolbox.toolbar.insert(separator, -1)
 
-        lessons_button = ToggleToolButton('mamamedia')
-        lessons_button.connect('toggled', self.__toggled_lessons_button_cb)
-        lessons_button.set_tooltip(_('Lessons'))
-        toolbox.toolbar.insert(lessons_button, -1)
-
-        separator = Gtk.SeparatorToolItem()
-        separator.set_draw(False)
-        toolbox.toolbar.insert(separator, -1)
-
         self.notebook_toolbar = Gtk.Notebook()
         self.notebook_toolbar.props.show_border = False
         self.notebook_toolbar.props.show_tabs = False
         self.notebook_toolbar.append_page(self._create_montage_toolbar(), Gtk.Label(''))
-        self.notebook_toolbar.append_page(self._create_lessons_toolbar(), Gtk.Label(''))
         self.notebook_toolbar.show()
 
         notebook_item = Gtk.ToolItem()
@@ -166,28 +151,3 @@ class CartoonBuilderActivity(SharedActivity):
             widget.set_icon_widget(playButtonImg)
             sound.stop()
             self.montage.stop()
-
-    def _create_lessons_toolbar(self):
-        toolbar = Gtk.Toolbar()
-
-        for lesson in lessons.THEMES:
-            button = Gtk.RadioToolButton()
-            button.set_label(lesson.name)
-            if toolbar.get_n_items():
-                button.props.group = toolbar.get_nth_item(0)
-            button.connect('clicked', self.__lesson_clicked_cb, lesson)
-            toolbar.insert(button, -1)
-
-        toolbar.get_nth_item(0).set_active(True)
-        toolbar.show_all()
-
-        return toolbar
-
-    def __lesson_clicked_cb(self, widget, lesson):
-        lesson.change()
-
-    def __toggled_lessons_button_cb(self, button):
-        page = button.props.active and 1 or 0
-        self.notebook_toolbar.set_current_page(page)
-        self.notebook.set_current_page(page)
-        self.playButton.props.active = False
